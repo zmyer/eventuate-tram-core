@@ -2,12 +2,20 @@ apply plugin: PublicModulePlugin
 
 dependencies {
     compile project(":eventuate-tram-messaging")
-    compile "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
-    compile 'mysql:mysql-connector-java:5.1.36'
-    compile "com.fasterxml.jackson.core:jackson-databind:2.8.3"
-    compile "io.eventuate.client.java:eventuate-client-java-jdbc-common:$eventuateClientVersion"
+    compile project(":eventuate-tram-messaging-producer-common")
 
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+
+    compile "io.eventuate.common:eventuate-common-jdbc:$eventuateCommonVersion"
+    compile "io.eventuate.common:eventuate-common-json-mapper:$eventuateCommonVersion"
+    compile "io.eventuate.common:eventuate-common-id:$eventuateCommonVersion"
+    compile "io.eventuate.common:eventuate-common-jdbc:$eventuateCommonVersion"
+
+    compile "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.8.3"
+
+    compile "io.eventuate.common:eventuate-common-jdbc:$eventuateCommonVersion"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootCdcVersion"
 
 }
 

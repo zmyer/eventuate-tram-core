@@ -1,15 +1,21 @@
 buildscript {
     repositories {
         jcenter()
+        maven { url deployUrl }
+        maven { url "https://dl.bintray.com/eventuateio-oss/eventuate-maven-release" }
     }
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'io.eventuate.plugins.gradle:eventuate-plugins-gradle-versions:0.1.0.RELEASE'
     }
 }
 
 allprojects {
     group = "io.eventuate.tram.core"
 }
+
+apply plugin: "io.eventuate.plugins.gradle.UpgradeVersions"
+apply plugin: WaitForCdcPlugin
 
 subprojects {
     apply plugin: 'java'
@@ -24,7 +30,7 @@ subprojects {
         key = System.getenv('BINTRAY_KEY')
         configurations = ['archives']
         pkg {
-            repo = 'eventuate-maven-release'
+            repo = "eventuate-maven-$bintrayRepoType"
             name = 'eventuate-tram'
             licenses = ['Apache-2.0']
             vcsUrl = 'https://github.com/eventuate-tram/eventuate-tram-core'
@@ -35,12 +41,13 @@ subprojects {
     repositories {
         mavenCentral()
         jcenter()
+        maven { url "https://repo.spring.io/milestone" }
         eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
     }
 
     dependencies {
         testCompile "junit:junit:4.12"
-        testCompile "org.mockito:mockito-all:1.10.19"
+        testCompile "org.mockito:mockito-core:2.23.4"
     }
 
     uploadArchives {
@@ -63,7 +70,7 @@ subprojects {
 
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = '4.4'
 }
 
 
@@ -78,7 +85,3 @@ gradle.projectsEvaluated {
         classpath = files(subprojects.findAll { subproject -> subproject.plugins.hasPlugin(PublicModulePlugin) }.javadoc.classpath)
     }
 }
-
-
-
-
